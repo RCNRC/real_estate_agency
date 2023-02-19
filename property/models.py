@@ -49,6 +49,8 @@ class Flat(models.Model):
         blank=True,
         db_index=True)
 
+    users_liked = models.ManyToManyField(User, related_name="flats_liked")
+
     def __str__(self):
         return f'{self.town}, {self.address} ({self.price}р.)'
 
