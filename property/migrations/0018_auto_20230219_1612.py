@@ -13,7 +13,6 @@ def autocomplete_owners(apps, schema_editor):
             owners_phonenumber=flat.owners_phonenumber,
             owners_pure_phone=flat.owners_pure_phone,
         )
-        owner.save()
         owner.flats.add(flat)
         owner.save()
 
