@@ -2,17 +2,21 @@
 
 from django.db import migrations
 import phonenumbers
+from django.db.models import F
+
+
+def get_phone_pure_number(owners_phonenumber):
+    owners_pure_phone = phonenumbers.parse(owners_phonenumber, "RU")
+    if phonenumbers.is_valid_number(owners_pure_phone):
+        return owners_pure_phone
+    else:
+        return None
 
 
 def automake_pure_phone_numbers(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
-    for flat in Flat.objects.all():
-        flat.owners_pure_phone = phonenumbers.parse(flat.owners_phonenumber, "RU")
-        if phonenumbers.is_valid_number(flat.owners_pure_phone):
-            flat.save()
-        else:
-            flat.owners_pure_phone = None
-            flat.save()
+    Flat.objects.all().update(owners_pure_phone=get_phone_pure_number(F('owners_phonenumber')))
+
 
 class Migration(migrations.Migration):
 

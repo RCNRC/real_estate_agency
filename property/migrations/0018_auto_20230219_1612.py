@@ -6,7 +6,8 @@ from django.db import migrations
 def autocomplete_owners(apps, schema_editor):
     Owner = apps.get_model('property', 'Owner')
     Flat = apps.get_model('property', 'Flat')
-    for flat in Flat.objects.all():
+    flats_set = Flat.objects.all()
+    for flat in flats_set.iterator():
         owner, _ = Owner.objects.get_or_create(
             owner=flat.owner,
             owners_phonenumber=flat.owners_phonenumber,
