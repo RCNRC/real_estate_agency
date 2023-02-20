@@ -68,8 +68,8 @@ class Owner(models.Model):
     def __str__(self):
         try:
             Owner.objects.get(id=self.id)
-            owner = self.flats.all().first()
-            return f'{owner.owner}, {owner.owners_phonenumber} ({owner.owners_pure_phone}р.)'
+            owner_object = self.flats.all().first()
+            return f'{owner_object.owner}, {owner_object.owners_phonenumber} ({owner_object.owners_pure_phone}р.)'
         except Owner.DoesNotExist:
             return ''
     
