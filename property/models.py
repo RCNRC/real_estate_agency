@@ -51,29 +51,45 @@ class Flat(models.Model):
         blank=True,
         db_index=True)
 
-    likes = models.ManyToManyField(User, related_name="likes", verbose_name="Понравилось пользователям")
+    likes = models.ManyToManyField(User, related_name='likes', verbose_name='Понравилось пользователям', null=True, blank=True)
 
     def __str__(self):
         return f'{self.town}, {self.address} ({self.price}р.)'
 
 
 class Complaint(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='complaints', verbose_name="Пользователь")
-    flat = models.ForeignKey(Flat, on_delete=models.CASCADE, related_name='complaints', verbose_name="Квартира")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='complaints', verbose_name='Пользователь')
+    flat = models.ForeignKey(Flat, on_delete=models.CASCADE, related_name='complaints', verbose_name='Квартира')
     text = models.TextField('Текст жалобы')
 
 class Owner(models.Model):
-    flats = models.ManyToManyField(Flat, related_name='owners', verbose_name="Квартиры")
-    
-    def __str__(self):
-        owner = self.flats.all().first()
-        return f'{owner.owner}, {owner.owners_phonenumber} ({owner.owners_pure_phone}р.)'
+    flats = models.ManyToManyField(Flat, related_name='owners', verbose_name='Квартиры', null=True, blank=True)
 
+    def __str__(self):
+        try:
+            Owner.objects.get(id=self.id)
+            owner = self.flats.all().first()
+            return f'{owner.owner}, {owner.owners_phonenumber} ({owner.owners_pure_phone}р.)'
+        except Owner.DoesNotExist:
+            return ''
+    
     def owner(self):
-        return self.flats.all().first().owner
+        try:   
+            Owner.objects.get(id=self.id)
+            return self.flats.all().first().owner
+        except Owner.DoesNotExist:
+            return ''
 
     def owners_phonenumber(self):
-        return self.flats.all().first().owners_phonenumber
+        try:   
+            Owner.objects.get(id=self.id)
+            return self.flats.all().first().owners_phonenumber
+        except Owner.DoesNotExist:
+            return ''
 
     def owners_pure_phone(self):
-        return self.flats.all().first().owners_pure_phone
+        try:   
+            Owner.objects.get(id=self.id)
+            return self.flats.all().first().owners_pure_phone
+        except Owner.DoesNotExist:
+            return ''

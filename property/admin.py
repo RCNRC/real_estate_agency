@@ -2,7 +2,6 @@ from django.contrib import admin
 from property.models import Flat, Complaint, Owner
 
 
-
 class MembershipInline(admin.TabularInline):
     model = Flat.owners.through
     raw_id_fields = ["owner"]
