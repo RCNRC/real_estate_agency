@@ -5,14 +5,8 @@ from django.db import migrations
 
 def autocomplete_new_buildings_field(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
-    new_buildings = Flat.objects.filter(construction_year__gte="2015")
-    for new_building in new_buildings:
-        new_building.new_building = True
-        new_building.save()
-    old_buildings = Flat.objects.filter(construction_year__lt="2015")
-    for old_building in old_buildings:
-        old_building.new_building = False
-        old_building.save()
+    Flat.objects.filter(construction_year__gte="2015").update(new_building=True)
+    Flat.objects.filter(construction_year__lt="2015").update(new_building=False)
 
 
 class Migration(migrations.Migration):
