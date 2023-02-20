@@ -28,4 +28,6 @@ class ComplaintsAdmin(admin.ModelAdmin):
 
 @admin.register(Owner)
 class OwnerAdmin(admin.ModelAdmin):
+    list_display = ["owner", "owners_phonenumber", "owners_pure_phone"]
+    readonly_fields = ["owner", "owners_phonenumber", "owners_pure_phone"]
     raw_id_fields = ["flats"]
