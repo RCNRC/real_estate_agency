@@ -2,7 +2,6 @@
 
 from django.db import migrations
 
-from django.db.models import F
 
 def autocomplete_owners(apps, schema_editor):
     Owner = apps.get_model('property', 'Owner')
@@ -15,9 +14,7 @@ def autocomplete_owners(apps, schema_editor):
             owners_pure_phone=flat.owners_pure_phone,
         )
         owner.flats.add(flat)
-        flat.owners.add(owner)
         owner.save()
-        flat.save()
 
 
 class Migration(migrations.Migration):
